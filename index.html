@@ -27,6 +27,19 @@
   header h1 { font-size:22px; font-weight:800; letter-spacing:-0.3px; }
   header .sub { font-size:13px; color:#3d6a92; margin-top:2px; }
 
+  /* Вкладки */
+  .seg {
+    display:flex; background:rgba(255,255,255,0.6); border-radius:14px; padding:4px;
+    margin:12px 0 4px; box-shadow:0 1px 4px rgba(30,80,130,0.12);
+  }
+  .seg button {
+    flex:1; border:none; background:transparent; color:#2b5d8c; font-size:14px;
+    font-weight:700; padding:9px 0; border-radius:11px; cursor:pointer;
+  }
+  .seg button.active { background:#1d6fb8; color:#fff; }
+  .page { display:none; }
+  .page.active { display:block; }
+
   .datebar { display:flex; align-items:center; justify-content:center; gap:14px; margin:12px 0 6px; }
   .datebar button {
     border:none; background:rgba(255,255,255,0.75); color:#1d6fb8;
@@ -42,6 +55,8 @@
     font-size:13px; text-transform:uppercase; letter-spacing:0.08em;
     color:#2b5d8c; margin:0 4px 8px; font-weight:700;
   }
+  .section h2.tappable { cursor:pointer; user-select:none; -webkit-user-select:none; }
+  .section h2 .arr { font-size:11px; opacity:0.7; }
   .card {
     background:rgba(255,255,255,0.88); border-radius:18px;
     box-shadow:0 2px 10px rgba(30,80,130,0.10); overflow:hidden;
@@ -66,6 +81,37 @@
   }
   .rank { font-size:17px; }
 
+  /* Настроение */
+  .moodcard { padding:14px 16px; }
+  .moodrow { display:flex; justify-content:space-between; gap:6px; margin-bottom:12px; }
+  .moodrow button {
+    flex:1; border:none; background:#eef5fb; font-size:27px; padding:8px 0;
+    border-radius:14px; cursor:pointer; transition:all .15s ease; filter:grayscale(55%); opacity:0.75;
+  }
+  .moodrow button.sel { background:#d3e9fb; filter:none; opacity:1; transform:scale(1.08); box-shadow:0 2px 8px rgba(30,80,130,0.2); }
+  .flagsrow { display:flex; flex-wrap:wrap; gap:7px; }
+  .flag {
+    border:none; background:#eef5fb; color:#2b5d8c; font-size:13px; font-weight:600;
+    padding:7px 12px; border-radius:20px; cursor:pointer;
+  }
+  .flag.sel { background:#1d6fb8; color:#fff; }
+
+  /* Цель */
+  .goalcard { padding:14px 16px; }
+  .goaltext { font-size:16px; font-weight:600; line-height:1.4; margin-bottom:10px; }
+  .goalbtn {
+    border:none; background:#2f9e4f; color:#fff; font-size:14px; font-weight:700;
+    padding:10px 18px; border-radius:12px; cursor:pointer;
+  }
+  .goalinput {
+    width:100%; border:1.5px solid #c6ddef; border-radius:12px; padding:11px 12px;
+    font-size:15px; font-family:inherit; color:#123a5c; background:#fdfeff; margin-bottom:10px;
+  }
+  .goalinput:focus { outline:none; border-color:#1d6fb8; }
+  .goaldone-list { margin-top:12px; border-top:0.5px solid rgba(30,80,130,0.12); padding-top:8px; }
+  .goaldone-list p { font-size:13px; color:#5a86ab; text-decoration:line-through; margin:4px 0; }
+  .goalcount { font-size:12.5px; color:#3d6a92; margin-top:6px; }
+
   .reportbtn {
     margin-top:20px; width:100%; border:none; background:#1d6fb8; color:#fff;
     font-size:16px; font-weight:700; padding:15px; border-radius:16px; cursor:pointer;
@@ -80,15 +126,39 @@
   .daycard .cnt small { font-weight:500; color:#3d6a92; }
   .daybar { height:8px; background:#e3eef7; border-radius:4px; margin:10px 0; overflow:hidden; }
   .daybar div { height:100%; background:linear-gradient(90deg,#4aa3e8,#2f9e4f); border-radius:4px; transition:width .3s ease; }
-  .thresh { display:flex; align-items:center; justify-content:space-between; font-size:13px; color:#2b5d8c; }
-  .thresh .stepper { display:flex; align-items:center; gap:10px; }
-  .thresh .stepper button {
-    width:28px; height:28px; border-radius:50%; border:none; background:#e3eef7;
-    color:#1d6fb8; font-size:16px; font-weight:800; cursor:pointer;
+  .threshnote { font-size:12.5px; color:#5a86ab; }
+  .threshnote b { color:#2b5d8c; }
+
+  /* Шестерёнка и настройки */
+  .gear {
+    position:fixed; top:calc(max(env(safe-area-inset-top, 0px), 54px) + 4px); right:14px;
+    z-index:40; border:none; background:rgba(255,255,255,0.8); width:38px; height:38px;
+    border-radius:50%; font-size:19px; cursor:pointer; box-shadow:0 2px 8px rgba(30,80,130,0.2);
   }
-  .thresh .stepper b { min-width:16px; text-align:center; }
+  .setrow { display:flex; flex-direction:column; align-items:center; gap:10px; font-size:14px; color:#2b5d8c; margin-top:6px; }
+  .setrow .stepper { display:flex; align-items:center; gap:12px; }
+  .setrow .stepper button {
+    width:36px; height:36px; border-radius:50%; border:none; background:#e3eef7;
+    color:#1d6fb8; font-size:19px; font-weight:800; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; padding:0; line-height:1;
+  }
+  .setrow .stepper b { min-width:22px; text-align:center; font-size:17px; }
+  .setdiv { border-top:0.5px solid rgba(30,80,130,0.15); margin:16px 0 12px; }
+  .setremrow { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:5px 0; text-align:left; }
+  .setremrow .txt { font-size:13.5px; line-height:1.35; color:#123a5c; }
+  .setremrow .txt small { display:block; color:#5a86ab; font-size:11.5px; margin-top:2px; }
+  .setremrow .tgl {
+    flex:0 0 auto; border:none; font-size:13px; font-weight:700; padding:8px 14px;
+    border-radius:12px; cursor:pointer; background:#e3eef7; color:#2b5d8c;
+  }
+  .setremrow .tgl.on { background:#1d6fb8; color:#fff; }
+  .setremrow a.calbtn {
+    flex:0 0 auto; text-decoration:none; font-size:13px; font-weight:700; padding:8px 14px;
+    border-radius:12px; background:#2f9e4f; color:#fff;
+  }
   .daystreakline { margin-top:10px; font-size:13.5px; }
   .daystreakline b { color:#c2410c; }
+  .rec { color:#3d6a92; font-size:12.5px; }
 
   /* Календарь */
   .cal { padding:14px 12px 16px; }
@@ -103,10 +173,11 @@
   .calgrid .wd { text-align:center; font-size:10.5px; color:#3d6a92; font-weight:600; padding:2px 0; }
   .cell {
     aspect-ratio:1; border-radius:9px; display:flex; align-items:center; justify-content:center;
-    font-size:12.5px; font-weight:600; color:#2b5d8c; background:#eef5fb; position:relative; cursor:pointer;
+    font-size:12.5px; font-weight:600; color:#2b5d8c; background:#eef5fb; position:relative;
   }
-  .cell.empty { background:transparent; cursor:default; }
-  .cell.future { opacity:0.35; cursor:default; }
+  .cell.clickable { cursor:pointer; }
+  .cell.empty { background:transparent; }
+  .cell.future { opacity:0.35; }
   .cell.today { outline:2px solid #1d6fb8; outline-offset:-2px; }
   .cell.ok::after {
     content:''; position:absolute; bottom:3px; left:50%; transform:translateX(-50%);
@@ -117,18 +188,54 @@
   .cell.lv3 { background:#5faade; color:#fff; }
   .cell.lv4 { background:#2b7fc4; color:#fff; }
   .cell.lv4.ok::after, .cell.lv3.ok::after { background:#b6f7c8; }
+  /* календарь по разделам (в статистике) */
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+  .chips button {
+    border:none; background:#eef5fb; color:#2b5d8c; font-size:12.5px; font-weight:600;
+    padding:7px 11px; border-radius:18px; cursor:pointer;
+  }
+  .chips button.sel { background:#1d6fb8; color:#fff; }
+  .capnote { font-size:11.5px; color:#7e9cb8; margin-top:8px; padding:0 2px; }
 
-  .stats { margin-top:22px; }
   .stats .card { padding:14px 16px; }
   .stats p { font-size:14px; line-height:1.55; margin:6px 0; }
   .stats p b { color:#c2410c; }
-  .stats p .rec { color:#3d6a92; font-size:12.5px; }
   .stats .empty { color:#5a86ab; font-size:13.5px; }
 
   .legend .card { padding:12px 16px; }
   .legend p { font-size:13px; margin:5px 0; color:#2b5d8c; }
   .legend p span.t { font-weight:700; }
   .legend p.locked { color:#7e9cb8; font-style:italic; }
+
+  /* Напоминания */
+  .remind .card { padding:14px 16px; }
+  .remind .rrow { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:6px 0; }
+  .remind .rrow .txt { font-size:14px; line-height:1.4; }
+  .remind .rrow .txt small { display:block; color:#5a86ab; font-size:12px; margin-top:2px; }
+  .remind .tgl {
+    flex:0 0 auto; border:none; font-size:13px; font-weight:700; padding:8px 14px;
+    border-radius:12px; cursor:pointer; background:#e3eef7; color:#2b5d8c;
+  }
+  .remind .tgl.on { background:#1d6fb8; color:#fff; }
+  .remind a.calbtn {
+    flex:0 0 auto; text-decoration:none; font-size:13px; font-weight:700; padding:8px 14px;
+    border-radius:12px; background:#2f9e4f; color:#fff;
+  }
+
+  /* Графики */
+  .chartcard { padding:14px 16px; }
+  .chartcard h3 { font-size:13.5px; color:#2b5d8c; margin-bottom:10px; font-weight:700; }
+  .chartcard .cap { font-size:11.5px; color:#7e9cb8; margin-top:6px; }
+  .vchart { display:flex; align-items:flex-end; gap:2px; height:90px; }
+  .vchart .b { flex:1; background:linear-gradient(180deg,#4aa3e8,#1d6fb8); border-radius:2px 2px 0 0; min-height:2px; }
+  .vchart .b.mx { background:linear-gradient(180deg,#3fbf68,#2f9e4f); }
+  .hbar { display:flex; align-items:center; gap:8px; margin:7px 0; }
+  .hbar .lbl { flex:0 0 118px; font-size:12px; color:#2b5d8c; line-height:1.25;
+    overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .hbar .lbl.emo { flex:0 0 30px; font-size:20px; text-align:center; }
+  .hbar .track { flex:1; height:14px; background:#e3eef7; border-radius:7px; overflow:hidden; }
+  .hbar .fill { height:100%; background:linear-gradient(90deg,#4aa3e8,#1d6fb8); border-radius:7px; }
+  .hbar .val { flex:0 0 34px; font-size:12px; font-weight:700; color:#2b5d8c; text-align:right; }
 
   /* Модалки */
   .overlay {
@@ -160,7 +267,6 @@
     100% { transform:translateY(-45vh) scale(1.4) rotate(20deg); opacity:0; }
   }
 
-  /* Тост-напоминание */
   .toast {
     position:fixed; top:calc(max(env(safe-area-inset-top, 0px), 54px) + 6px);
     left:16px; right:16px; max-width:400px; margin:0 auto; z-index:70;
@@ -173,63 +279,117 @@
 </head>
 <body>
 <div class="notch-space"></div>
+<button class="gear" id="gearBtn" aria-label="Настройки">⚙️</button>
 <div class="app">
   <header>
     <h1>😎 Как стать альфа-гига-чадом</h1>
     <div class="sub">Закрывай пункты каждый день — получай ранги</div>
   </header>
 
-  <div class="datebar">
-    <button id="prevDay">‹</button>
-    <div class="cur"><span id="dateLabel"></span><small id="dateSub"></small></div>
-    <button id="nextDay">›</button>
+  <div class="seg">
+    <button id="tabMain" class="active">Сегодня</button>
+    <button id="tabCharts">📈 Статистика</button>
   </div>
 
-  <div id="sections"></div>
+  <!-- ======== ВКЛАДКА "СЕГОДНЯ" ======== -->
+  <div class="page active" id="pageMain">
 
-  <button class="reportbtn" id="reportBtn">📤 Отправить отчёт Кате</button>
-
-  <div class="section">
-    <h2>🎯 День чада</h2>
-    <div class="card daycard">
-      <div class="toprow">
-        <div class="cnt">Закрыто сегодня: <span id="dayCount"></span> <small id="dayTotal"></small></div>
-        <div id="dayStatus" style="font-size:20px;"></div>
-      </div>
-      <div class="daybar"><div id="dayBarFill" style="width:0%"></div></div>
-      <div class="thresh">
-        <span>День засчитан от:</span>
-        <span class="stepper">
-          <button id="thMinus">−</button>
-          <b id="thVal"></b>
-          <button id="thPlus">+</button>
-          <span>пунктов</span>
-        </span>
-      </div>
-      <div class="daystreakline" id="dayStreakLine"></div>
+    <div class="datebar">
+      <button id="prevDay">‹</button>
+      <div class="cur"><span id="dateLabel"></span><small id="dateSub"></small></div>
+      <button id="nextDay">›</button>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>🗓 Календарь чада</h2>
-    <div class="card cal">
-      <div class="calhead">
-        <button id="calPrev">‹</button>
-        <div class="m" id="calTitle"></div>
-        <button id="calNext">›</button>
+    <div id="sections"></div>
+
+    <div class="section">
+      <h2>💙 Настроение и самочувствие</h2>
+      <div class="card moodcard">
+        <div class="moodrow" id="moodRow"></div>
+        <div class="flagsrow" id="flagsRow"></div>
       </div>
-      <div class="calgrid" id="calGrid"></div>
     </div>
+
+    <div class="section">
+      <h2>🚀 Моя цель</h2>
+      <div class="card goalcard" id="goalCard"></div>
+    </div>
+
+    <button class="reportbtn" id="reportBtn">📤 Отправить отчёт Кате</button>
+
+    <div class="section">
+      <h2>🎯 День чада</h2>
+      <div class="card daycard">
+        <div class="toprow">
+          <div class="cnt">Закрыто сегодня: <span id="dayCount"></span> <small id="dayTotal"></small></div>
+          <div id="dayStatus" style="font-size:20px;"></div>
+        </div>
+        <div class="daybar"><div id="dayBarFill" style="width:0%"></div></div>
+        <div class="threshnote">День засчитан от <b id="thNote"></b> — настроить: ⚙️ сверху</div>
+        <div class="daystreakline" id="dayStreakLine"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🗓 Календарь чада</h2>
+      <div class="card cal">
+        <div class="calhead">
+          <button id="calPrev">‹</button>
+          <div class="m" id="calTitle"></div>
+          <button id="calNext">›</button>
+        </div>
+        <div class="calgrid" id="calGrid"></div>
+      </div>
+    </div>
+
   </div>
 
-  <div class="section stats">
-    <h2>📊 Подсчёты и рекорды</h2>
-    <div class="card" id="statsCard"></div>
-  </div>
-
-  <div class="section legend">
-    <h2>🏆 Ранги</h2>
-    <div class="card" id="ranksCard"></div>
+  <!-- ======== ВКЛАДКА "СТАТИСТИКА" ======== -->
+  <div class="page" id="pageCharts">
+    <div class="section stats">
+      <h2>📊 Подсчёты и рекорды</h2>
+      <div class="card" id="statsCard"></div>
+    </div>
+    <div class="section legend">
+      <h2>🏆 Ранги</h2>
+      <div class="card" id="ranksCard"></div>
+    </div>
+    <div class="section">
+      <h2>📈 Пункты по дням</h2>
+      <div class="card chartcard">
+        <div class="vchart" id="chDays"></div>
+        <div class="cap" id="chDaysCap"></div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>📚 Разделы за 30 дней</h2>
+      <div class="card chartcard" id="chSections"></div>
+    </div>
+    <div class="section">
+      <h2>🗓 Календарь по разделам</h2>
+      <div class="card cal">
+        <div class="chips" id="secChips"></div>
+        <div class="calhead">
+          <button id="scPrev">‹</button>
+          <div class="m" id="scTitle"></div>
+          <button id="scNext">›</button>
+        </div>
+        <div class="calgrid" id="scGrid"></div>
+        <div class="capnote">Зелёная точка — в этот день закрыта хотя бы половина пунктов раздела</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>🏅 Топ привычек за всё время</h2>
+      <div class="card chartcard" id="chTop"></div>
+    </div>
+    <div class="section">
+      <h2>💙 Настроение за 30 дней</h2>
+      <div class="card chartcard" id="chMood"></div>
+    </div>
+    <div class="section">
+      <h2>🚀 Цели</h2>
+      <div class="card chartcard" id="chGoals"></div>
+    </div>
   </div>
 </div>
 
@@ -243,6 +403,30 @@
   </div>
 </div>
 
+<div class="overlay" id="settingsOverlay">
+  <div class="modal">
+    <div class="big">⚙️</div>
+    <h3>Настройки</h3>
+    <div class="setrow">
+      <span>День чада засчитан от:</span>
+      <span class="stepper">
+        <button id="thMinus">−</button>
+        <b id="thVal"></b>
+        <button id="thPlus">+</button>
+        <span>пунктов</span>
+      </span>
+    </div>
+    <div class="setdiv"></div>
+    <div class="setremrow">
+      <div class="txt">📅 Настоящий пуш через Календарь
+        <small>Добавь один раз — телефон будет напоминать в 22:30 каждый день сам</small>
+      </div>
+      <a class="calbtn" href="reminder.ics">Добавить</a>
+    </div>
+    <button id="settingsClose">Готово</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -250,29 +434,44 @@
   'use strict';
 
   var SECTIONS = [
-    { title: '✨ Внешний вид', items: [
-      { id:'wake',    name:'Встал до 8:30',            phrase:'Вы вставали вовремя' },
-      { id:'sleep',   name:'Лёг спать до 23:30',       phrase:'Вы ложились вовремя' },
-      { id:'serum',   name:'Сыворотка для бороды',     phrase:'Вы мазали бороду сывороткой' },
-      { id:'pool',    name:'Бассейн',                  phrase:'Вы ходили в бассейн' },
-      { id:'cardio',  name:'Кардио',                   phrase:'Вы делали кардио' },
-      { id:'group',   name:'Групповая',                phrase:'Вы ходили на групповые' },
-      { id:'gym',     name:'Треня в зале',             phrase:'Вы тренировались в зале' },
-      { id:'padel',   name:'Падл',                     phrase:'Вы играли в падл' },
-      { id:'cal',     name:'Считал калории',           phrase:'Вы считали калории' }
+    { title:'⏰ Режим дня', items: [
+      { id:'wake',      name:'Встал до 8:30',            phrase:'Вы вставали вовремя' },
+      { id:'sleep',     name:'Лёг спать до 23:30',       phrase:'Вы ложились вовремя' },
+      { id:'read',      name:'Прочитал 20 страниц',      phrase:'Вы читали по 20 страниц' }
     ]},
-    { title: '🎓 Академия', items: [
-      { id:'read',    name:'Прочитал 20 страниц',      phrase:'Вы читали по 20 страниц' },
-      { id:'article', name:'Сделал что-то для статьи/диссертации', phrase:'Вы работали над статьёй/диссертацией' }
+    { title:'🏋️ Спорт', items: [
+      { id:'morningex', name:'Зарядка',                  phrase:'Вы делали зарядку' },
+      { id:'pool',      name:'Бассейн',                  phrase:'Вы ходили в бассейн' },
+      { id:'cardio',    name:'Кардио',                   phrase:'Вы делали кардио' },
+      { id:'group',     name:'Групповая',                phrase:'Вы ходили на групповые' },
+      { id:'gym',       name:'Треня в зале',             phrase:'Вы тренировались в зале' },
+      { id:'padel',     name:'Падл',                     phrase:'Вы играли в падл' }
     ]},
-    { title: '💼 Работа', items: [
-      { id:'plans',   name:'Сделал все планы на день', phrase:'Вы закрывали все планы дня' },
-      { id:'bigdeal', name:'Важное большое дело // структурно изменилась ситуация', phrase:'Вы делали важные большие дела' }
+    { title:'✨ Внешний вид', items: [
+      { id:'serum',     name:'Сыворотка для бороды',     phrase:'Вы мазали бороду сывороткой' },
+      { id:'cal',       name:'Считал калории',           phrase:'Вы считали калории' }
+    ]},
+    { title:'🎓 Академия', items: [
+      { id:'disstext',  name:'Текст диссертации',        phrase:'Вы писали текст диссертации' },
+      { id:'dissart',   name:'Статья по диссертации',    phrase:'Вы работали над статьёй по диссертации' },
+      { id:'heritage',  name:'Статья по культурному наследию', phrase:'Вы работали над статьёй по наследию' },
+      { id:'socio',     name:'Общая социо-полит тема',   phrase:'Вы занимались социо-полит темой' },
+      { id:'datastr',   name:'Структурирование данных / поиск информации', phrase:'Вы структурировали данные' }
+    ]},
+    { title:'💼 Работа', items: [
+      { id:'planday',   name:'Запланировал день',        phrase:'Вы планировали день' },
+      { id:'aijoke',    name:'Придумал прикол с ИИ',     phrase:'Вы придумывали приколы с ИИ' },
+      { id:'quant',     name:'Тренировка по количу',     phrase:'Вы тренировались по количу' },
+      { id:'plans',     name:'Сделал все планы на день', phrase:'Вы закрывали все планы дня' },
+      { id:'bigdeal',   name:'Важное большое дело // структурно изменилась ситуация', phrase:'Вы делали важные большие дела' }
     ]}
   ];
   var ALL_ITEMS = [];
   SECTIONS.forEach(function(s){ s.items.forEach(function(i){ ALL_ITEMS.push(i); }); });
   var DAY_ID = '__day';
+
+  var MOODS = ['😄','🙂','😐','😔','😢'];
+  var FLAGS = ['Горд собой','Всем удовлетворён','Спокоен','Устал','Раздражён','Разочарован в себе'];
 
   var RANKS = [
     { days:3,  name:'Чад',                                emoji:'💪', label:'3 дня подряд' },
@@ -300,6 +499,8 @@
   if (!state.celebrated) state.celebrated = {};
   if (!state.peak) state.peak = {};
   if (!state.threshold) state.threshold = 5;
+  if (!state.mood) state.mood = {};
+  if (!state.goals) state.goals = [];
 
   /* ---------- даты ---------- */
   function fmt(d){
@@ -329,6 +530,12 @@
     if (u >= 2 && u <= 4) return 'пункта';
     return 'пунктов';
   }
+  function lastNDates(n){
+    var out = [];
+    var d = new Date();
+    for (var i=0;i<n;i++){ out.unshift(fmt(d)); d.setDate(d.getDate()-1); }
+    return out;
+  }
 
   /* ---------- проверки и стрики ---------- */
   function isChecked(id, dateStr){
@@ -340,10 +547,18 @@
     return n;
   }
   function dayOk(dateStr){ return dayCount(dateStr) >= state.threshold; }
+  function sectionCount(sec, dateStr){
+    var n = 0;
+    sec.items.forEach(function(it){ if (isChecked(it.id, dateStr)) n++; });
+    return n;
+  }
+  function sectionOk(sec, dateStr){
+    return sectionCount(sec, dateStr) >= Math.ceil(sec.items.length / 2);
+  }
 
   function streakFrom(pred){
     var d = new Date();
-    if (!pred(fmt(d))) d.setDate(d.getDate()-1); // сегодня ещё не закрыт — стрик жив со вчера
+    if (!pred(fmt(d))) d.setDate(d.getDate()-1);
     var n = 0;
     while (pred(fmt(d))) { n++; d.setDate(d.getDate()-1); }
     return n;
@@ -381,7 +596,22 @@
     return r;
   }
 
-  /* ---------- рендер ---------- */
+  /* ---------- вкладки ---------- */
+  var tabMain = document.getElementById('tabMain');
+  var tabCharts = document.getElementById('tabCharts');
+  var pageMain = document.getElementById('pageMain');
+  var pageCharts = document.getElementById('pageCharts');
+  tabMain.addEventListener('click', function(){
+    tabMain.classList.add('active'); tabCharts.classList.remove('active');
+    pageMain.classList.add('active'); pageCharts.classList.remove('active');
+  });
+  tabCharts.addEventListener('click', function(){
+    tabCharts.classList.add('active'); tabMain.classList.remove('active');
+    pageCharts.classList.add('active'); pageMain.classList.remove('active');
+    renderCharts();
+  });
+
+  /* ---------- рендер основной ---------- */
   var sectionsEl = document.getElementById('sections');
   var statsEl = document.getElementById('statsCard');
   var dateLabel = document.getElementById('dateLabel');
@@ -427,11 +657,203 @@
       sectionsEl.appendChild(wrap);
     });
 
+    renderMood();
+    renderGoal();
     updatePeaks();
     renderDayCard();
-    renderCalendar();
+    renderMainCalendar();
     renderStats();
     renderRanks();
+  }
+
+  /* ---------- настроение ---------- */
+  function renderMood(){
+    var ds = fmt(viewDate);
+    var rec = state.mood[ds] || {};
+    var moodRow = document.getElementById('moodRow');
+    moodRow.innerHTML = '';
+    MOODS.forEach(function(emo, idx){
+      var b = document.createElement('button');
+      b.textContent = emo;
+      if (rec.m === idx) b.className = 'sel';
+      b.addEventListener('click', function(){
+        var r = state.mood[ds] || {};
+        r.m = (r.m === idx) ? undefined : idx;
+        if (r.m === undefined && (!r.flags || !r.flags.length)) delete state.mood[ds];
+        else state.mood[ds] = r;
+        saveState(); renderMood();
+      });
+      moodRow.appendChild(b);
+    });
+    var flagsRow = document.getElementById('flagsRow');
+    flagsRow.innerHTML = '';
+    FLAGS.forEach(function(fl){
+      var b = document.createElement('button');
+      b.className = 'flag' + ((rec.flags || []).indexOf(fl) >= 0 ? ' sel' : '');
+      b.textContent = fl;
+      b.addEventListener('click', function(){
+        var r = state.mood[ds] || {};
+        r.flags = r.flags || [];
+        var i = r.flags.indexOf(fl);
+        if (i >= 0) r.flags.splice(i, 1); else r.flags.push(fl);
+        if (r.m === undefined && !r.flags.length) delete state.mood[ds];
+        else state.mood[ds] = r;
+        saveState(); renderMood();
+      });
+      flagsRow.appendChild(b);
+    });
+  }
+
+  /* ---------- цель ---------- */
+  function activeGoal(){
+    for (var i = state.goals.length - 1; i >= 0; i--)
+      if (!state.goals[i].done) return state.goals[i];
+    return null;
+  }
+  function renderGoal(){
+    var card = document.getElementById('goalCard');
+    var g = activeGoal();
+    var doneGoals = state.goals.filter(function(x){ return x.done; });
+    var html = '';
+    if (g) {
+      html += '<div class="goaltext">🎯 ' + escapeHtml(g.text) + '</div>' +
+              '<button class="goalbtn" id="goalDone">Выполнил ✅</button>';
+    } else {
+      html += '<input class="goalinput" id="goalInput" type="text" placeholder="Например: подать статью в журнал" maxlength="120">' +
+              '<button class="goalbtn" id="goalSave">Поставить цель 🚀</button>';
+    }
+    if (doneGoals.length) {
+      html += '<div class="goalcount">Выполнено целей: <b>' + doneGoals.length + '</b> 🏆</div>';
+      html += '<div class="goaldone-list">';
+      doneGoals.slice(-3).reverse().forEach(function(x){
+        html += '<p>✅ ' + escapeHtml(x.text) + '</p>';
+      });
+      html += '</div>';
+    }
+    card.innerHTML = html;
+    if (g) {
+      document.getElementById('goalDone').addEventListener('click', function(){
+        g.done = true;
+        g.doneDate = todayStr();
+        saveState();
+        renderGoal();
+        showToast('🎉 Цель выполнена! Ваша девушка гордится вами. Ставьте новую!');
+      });
+    } else {
+      document.getElementById('goalSave').addEventListener('click', function(){
+        var inp = document.getElementById('goalInput');
+        var txt = (inp.value || '').trim();
+        if (!txt) { inp.focus(); return; }
+        state.goals.push({ text: txt, created: todayStr(), done: false });
+        saveState();
+        renderGoal();
+      });
+    }
+  }
+  function escapeHtml(s){
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ---------- день чада ---------- */
+  function renderDayCard(){
+    var t = todayStr();
+    var cnt = dayCount(t);
+    var total = ALL_ITEMS.length;
+    document.getElementById('dayCount').textContent = cnt;
+    document.getElementById('dayTotal').textContent = 'из ' + total;
+    document.getElementById('dayBarFill').style.width = Math.round(cnt/total*100) + '%';
+    document.getElementById('dayStatus').textContent = dayOk(t) ? '✅' : '⏳';
+    document.getElementById('thVal').textContent = state.threshold;
+    document.getElementById('thNote').textContent = state.threshold + ' ' + pointsWord(state.threshold);
+    var s = currentStreak(DAY_ID);
+    var best = bestStreak(DAY_ID);
+    var line = '';
+    if (s >= 1) {
+      line = 'Серия дней чада: <b>' + s + ' ' + daysWord(s) + ' подряд</b>';
+      var rank = rankFor(s);
+      if (rank) line += ' ' + rank.emoji;
+    } else {
+      line = 'Закрой сегодня ' + state.threshold + ' ' + pointsWord(state.threshold) + ' — начни серию дней чада!';
+    }
+    if (best >= 2) line += ' <span class="rec">(рекорд: ' + best + ' ' + daysWord(best) + ')</span>';
+    document.getElementById('dayStreakLine').innerHTML = line;
+  }
+
+  /* ---------- календарь: общий строитель ---------- */
+  function buildCalGrid(grid, monthDate, intensityFn, okFn, onDayClick){
+    grid.innerHTML = '';
+    ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(function(w){
+      var el = document.createElement('div');
+      el.className = 'wd'; el.textContent = w;
+      grid.appendChild(el);
+    });
+    var y = monthDate.getFullYear(), m = monthDate.getMonth();
+    var first = new Date(y, m, 1);
+    var offset = (first.getDay() + 6) % 7;
+    for (var i=0;i<offset;i++){
+      var e = document.createElement('div');
+      e.className = 'cell empty';
+      grid.appendChild(e);
+    }
+    var dim = new Date(y, m+1, 0).getDate();
+    var tStr = todayStr();
+    for (var day=1; day<=dim; day++){
+      (function(day){
+        var d = new Date(y, m, day);
+        var ds = fmt(d);
+        var cell = document.createElement('div');
+        var cls = 'cell';
+        var future = ds > tStr;
+        if (future) cls += ' future';
+        else {
+          var ratio = intensityFn(ds);
+          if (ratio > 0)
+            cls += ratio >= 0.75 ? ' lv4' : ratio >= 0.5 ? ' lv3' : ratio >= 0.25 ? ' lv2' : ' lv1';
+          if (okFn(ds)) cls += ' ok';
+        }
+        if (ds === tStr) cls += ' today';
+        if (onDayClick && !future) cls += ' clickable';
+        cell.className = cls;
+        cell.textContent = day;
+        if (onDayClick && !future) cell.addEventListener('click', function(){ onDayClick(d); });
+        grid.appendChild(cell);
+      })(day);
+    }
+  }
+
+  function renderMainCalendar(){
+    var y = calMonth.getFullYear(), m = calMonth.getMonth();
+    document.getElementById('calTitle').textContent = MONTHS_NOM[m] + ' ' + y;
+    var now = new Date();
+    document.getElementById('calNext').disabled = (y === now.getFullYear() && m === now.getMonth()) || calMonth > now;
+    buildCalGrid(document.getElementById('calGrid'), calMonth,
+      function(ds){ var c = dayCount(ds); return c > 0 ? c / ALL_ITEMS.length : 0; },
+      dayOk,
+      function(d){
+        viewDate = d;
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+  }
+
+  /* ---------- подсчёты и рекорды ---------- */
+  function renderStats(){
+    var html = '';
+    ALL_ITEMS.forEach(function(item){
+      var s = currentStreak(item.id);
+      var best = bestStreak(item.id);
+      if (s >= 2) {
+        html += '<p>' + item.phrase + ' уже <b>' + s + ' ' + daysWord(s) + ' подряд</b>';
+        var rank = rankFor(s);
+        if (rank) html += ' — вы ' + rank.name + '! ' + rank.emoji;
+        if (best > s) html += ' <span class="rec">(рекорд: ' + best + ' ' + daysWord(best) + ' — есть что побивать)</span>';
+        html += '</p>';
+      } else if (best >= 3) {
+        html += '<p>«' + item.name + '» — рекорд: <b>' + best + ' ' + daysWord(best) + '</b><span class="rec">, сейчас: ' + s + '. Пора вернуть форму 💪</span></p>';
+      }
+    });
+    if (!html) html = '<p class="empty">Пока нет серий из 2+ дней. Закрывай пункты каждый день — и здесь появятся твои рекорды 💪</p>';
+    statsEl.innerHTML = html;
   }
 
   /* ---------- ранги: видны только заработанные ---------- */
@@ -456,102 +878,6 @@
       html = '<p class="locked">🔒 Ранги засекречены. Первый откроется, когда закроешь один пункт ' + RANKS[0].label + '.</p>';
     }
     document.getElementById('ranksCard').innerHTML = html;
-  }
-
-  function renderDayCard(){
-    var t = todayStr();
-    var cnt = dayCount(t);
-    var total = ALL_ITEMS.length;
-    document.getElementById('dayCount').textContent = cnt;
-    document.getElementById('dayTotal').textContent = 'из ' + total;
-    document.getElementById('dayBarFill').style.width = Math.round(cnt/total*100) + '%';
-    document.getElementById('dayStatus').textContent = dayOk(t) ? '✅' : '⏳';
-    document.getElementById('thVal').textContent = state.threshold;
-    var s = currentStreak(DAY_ID);
-    var best = bestStreak(DAY_ID);
-    var line = '';
-    if (s >= 1) {
-      line = 'Серия дней чада: <b>' + s + ' ' + daysWord(s) + ' подряд</b>';
-      var rank = rankFor(s);
-      if (rank) line += ' ' + rank.emoji;
-    } else {
-      line = 'Закрой сегодня ' + state.threshold + ' ' + pointsWord(state.threshold) + ' — начни серию дней чада!';
-    }
-    if (best >= 2) line += ' <span class="rec">(рекорд: ' + best + ' ' + daysWord(best) + ')</span>';
-    document.getElementById('dayStreakLine').innerHTML = line;
-  }
-
-  /* ---------- календарь ---------- */
-  function renderCalendar(){
-    var y = calMonth.getFullYear(), m = calMonth.getMonth();
-    document.getElementById('calTitle').textContent = MONTHS_NOM[m] + ' ' + y;
-    var now = new Date();
-    document.getElementById('calNext').disabled = (y === now.getFullYear() && m === now.getMonth()) || calMonth > now;
-
-    var grid = document.getElementById('calGrid');
-    grid.innerHTML = '';
-    ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(function(w){
-      var el = document.createElement('div');
-      el.className = 'wd'; el.textContent = w;
-      grid.appendChild(el);
-    });
-    var first = new Date(y, m, 1);
-    var offset = (first.getDay() + 6) % 7;
-    for (var i=0;i<offset;i++){
-      var e = document.createElement('div');
-      e.className = 'cell empty';
-      grid.appendChild(e);
-    }
-    var dim = new Date(y, m+1, 0).getDate();
-    var total = ALL_ITEMS.length;
-    var tStr = todayStr();
-    for (var day=1; day<=dim; day++){
-      (function(day){
-        var d = new Date(y, m, day);
-        var ds = fmt(d);
-        var cell = document.createElement('div');
-        var cls = 'cell';
-        var future = ds > tStr;
-        if (future) cls += ' future';
-        else {
-          var cnt = dayCount(ds);
-          if (cnt > 0) {
-            var ratio = cnt / total;
-            cls += ratio >= 0.75 ? ' lv4' : ratio >= 0.5 ? ' lv3' : ratio >= 0.25 ? ' lv2' : ' lv1';
-          }
-          if (dayOk(ds)) cls += ' ok';
-        }
-        if (ds === tStr) cls += ' today';
-        cell.className = cls;
-        cell.textContent = day;
-        if (!future) cell.addEventListener('click', function(){
-          viewDate = d;
-          render();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        grid.appendChild(cell);
-      })(day);
-    }
-  }
-
-  /* ---------- подсчёты и рекорды ---------- */
-  function renderStats(){
-    var html = '';
-    ALL_ITEMS.forEach(function(item){
-      var s = currentStreak(item.id);
-      var best = bestStreak(item.id);
-      if (s >= 2) {
-        html += '<p>' + item.phrase + ' уже <b>' + s + ' ' + daysWord(s) + ' подряд</b>';
-        var rank = rankFor(s);
-        if (rank) html += ' — вы ' + rank.name + '! ' + rank.emoji;
-        if (best > s) html += ' <span class="rec">(рекорд: ' + best + ' ' + daysWord(best) + ' — есть что побивать)</span>';
-        html += '</p>';
-      } else if (best >= 3) {
-        html += '<p>«' + item.name + '» — рекорд: <b>' + best + ' ' + daysWord(best) + '</b><span class="rec">, сейчас: ' + s + '. Пора вернуть форму 💪</span></p>';
-      }
-    });
-    if (!html) html = '<p class="empty">Пока нет серий из 2+ дней. Закрывай пункты каждый день — и здесь появятся твои рекорды 💪</p>';
-    statsEl.innerHTML = html;
   }
 
   /* ---------- действия ---------- */
@@ -580,6 +906,7 @@
   }
 
   /* пики серий — для штрафного юмора */
+  var penaltyShown = false;
   function updatePeaks(){
     var changed = false;
     var lost = [];
@@ -590,7 +917,6 @@
       if (r) {
         if ((state.peak[id] || 0) < r.days) { state.peak[id] = r.days; changed = true; }
       } else if (state.peak[id]) {
-        // серия с рангом оборвалась
         var oldRank = null;
         for (var i=0;i<RANKS.length;i++) if (RANKS[i].days === state.peak[id]) oldRank = RANKS[i];
         var item = null;
@@ -603,12 +929,12 @@
     if (changed) saveState();
     if (lost.length && !penaltyShown) { penaltyShown = true; showPenalty(lost); }
   }
-  var penaltyShown = false;
 
   /* ---------- модалки ---------- */
   var overlay = document.getElementById('overlay');
   var modalBox = document.getElementById('modalBox');
   var modalQueue = [];
+  var modalOpen = false;
 
   function showModal(item, rank, streak){
     modalQueue.push(function(){
@@ -644,7 +970,6 @@
     pumpModal();
   }
 
-  var modalOpen = false;
   function pumpModal(){
     if (modalOpen || !modalQueue.length) return;
     modalOpen = true;
@@ -676,16 +1001,21 @@
     lines.push('😎 Отчёт альфа-гига-чада за сегодня');
     lines.push('Закрыто: ' + closed.length + '/' + ALL_ITEMS.length + ' ' + pointsWord(ALL_ITEMS.length));
     closed.forEach(function(it){ lines.push('✅ ' + it.name); });
+    var moodRec = state.mood[t];
+    if (moodRec && moodRec.m !== undefined) lines.push('Настроение: ' + MOODS[moodRec.m] +
+      (moodRec.flags && moodRec.flags.length ? ' (' + moodRec.flags.join(', ') + ')' : ''));
     var bestItem = null, bestS = 0;
     ALL_ITEMS.forEach(function(it){
       var s = currentStreak(it.id);
       if (s > bestS) { bestS = s; bestItem = it; }
     });
     if (bestItem && bestS >= 2) lines.push('🔥 Лучшая серия: «' + bestItem.name + '» — ' + bestS + ' ' + daysWord(bestS) + ' подряд');
-    var ds = currentStreak(DAY_ID);
-    if (ds >= 2) lines.push('🎯 Дней чада подряд: ' + ds);
+    var dstreak = currentStreak(DAY_ID);
+    if (dstreak >= 2) lines.push('🎯 Дней чада подряд: ' + dstreak);
     var rank = rankFor(bestS);
     if (rank) lines.push('🏆 Текущий ранг: ' + rank.name + ' ' + rank.emoji);
+    var g = activeGoal();
+    if (g) lines.push('🚀 Цель: ' + g.text);
     var text = lines.join('\n');
 
     if (navigator.share) {
@@ -699,6 +1029,131 @@
     }
   });
 
+  /* ---------- календарь по разделам (статистика) ---------- */
+  var statSecIdx = 0;
+  var statMonth = new Date(); statMonth.setDate(1);
+  function renderSecCal(){
+    var chips = document.getElementById('secChips');
+    chips.innerHTML = '';
+    SECTIONS.forEach(function(sec, i){
+      var b = document.createElement('button');
+      b.textContent = sec.title;
+      if (i === statSecIdx) b.className = 'sel';
+      b.addEventListener('click', function(){ statSecIdx = i; renderSecCal(); });
+      chips.appendChild(b);
+    });
+    var sec = SECTIONS[statSecIdx];
+    document.getElementById('scTitle').textContent =
+      MONTHS_NOM[statMonth.getMonth()] + ' ' + statMonth.getFullYear();
+    var now = new Date();
+    document.getElementById('scNext').disabled =
+      statMonth.getFullYear() === now.getFullYear() && statMonth.getMonth() === now.getMonth();
+    buildCalGrid(document.getElementById('scGrid'), statMonth,
+      function(ds){
+        var c = sectionCount(sec, ds);
+        return c > 0 ? c / sec.items.length : 0;
+      },
+      function(ds){ return sectionOk(sec, ds); },
+      null);
+  }
+  document.getElementById('scPrev').addEventListener('click', function(){
+    statMonth.setMonth(statMonth.getMonth()-1); renderSecCal();
+  });
+  document.getElementById('scNext').addEventListener('click', function(){
+    statMonth.setMonth(statMonth.getMonth()+1); renderSecCal();
+  });
+
+  /* ---------- графики ---------- */
+  function renderCharts(){
+    renderSecCal();
+    var N = 30;
+    var dates = lastNDates(N);
+
+    // 1. пункты по дням
+    var counts = dates.map(dayCount);
+    var mx = Math.max.apply(null, counts.concat([1]));
+    var ch = document.getElementById('chDays');
+    ch.innerHTML = '';
+    counts.forEach(function(c, i){
+      var b = document.createElement('div');
+      b.className = 'b' + (c === mx && c > 0 ? ' mx' : '');
+      b.style.height = Math.max(2, Math.round(c / mx * 88)) + 'px';
+      b.title = dates[i] + ': ' + c;
+      ch.appendChild(b);
+    });
+    var sum = counts.reduce(function(a,b){ return a+b; }, 0);
+    document.getElementById('chDaysCap').textContent =
+      'Последние 30 дней · всего закрыто: ' + sum + ' · лучший день: ' + mx;
+
+    // 2. разделы за 30 дней
+    var secHtml = '';
+    SECTIONS.forEach(function(sec){
+      var done = 0;
+      dates.forEach(function(ds){ done += sectionCount(sec, ds); });
+      var possible = sec.items.length * N;
+      var pct = Math.round(done / possible * 100);
+      secHtml += hbar(sec.title, pct, pct + '%', false);
+    });
+    document.getElementById('chSections').innerHTML = secHtml || emptyMsg();
+
+    // 3. топ привычек за всё время
+    var tops = ALL_ITEMS.map(function(it){
+      return { name: it.name, n: Object.keys(state.checks[it.id] || {}).length };
+    }).filter(function(x){ return x.n > 0; })
+      .sort(function(a,b){ return b.n - a.n; })
+      .slice(0, 7);
+    var topMax = tops.length ? tops[0].n : 1;
+    var topHtml = '';
+    tops.forEach(function(x){
+      topHtml += hbar(x.name, Math.round(x.n / topMax * 100), String(x.n), false);
+    });
+    document.getElementById('chTop').innerHTML = topHtml || emptyMsg();
+
+    // 4. настроение
+    var moodCounts = [0,0,0,0,0];
+    var flagCounts = {};
+    dates.forEach(function(ds){
+      var r = state.mood[ds];
+      if (!r) return;
+      if (r.m !== undefined) moodCounts[r.m]++;
+      (r.flags || []).forEach(function(f){ flagCounts[f] = (flagCounts[f] || 0) + 1; });
+    });
+    var moodTotal = moodCounts.reduce(function(a,b){ return a+b; }, 0);
+    var moodHtml = '';
+    if (moodTotal) {
+      var mmx = Math.max.apply(null, moodCounts);
+      MOODS.forEach(function(emo, i){
+        moodHtml += hbar(emo, Math.round(moodCounts[i] / (mmx || 1) * 100), String(moodCounts[i]), true);
+      });
+      var fl = Object.keys(flagCounts).sort(function(a,b){ return flagCounts[b]-flagCounts[a]; });
+      if (fl.length) {
+        moodHtml += '<h3 style="margin-top:12px;">Чаще всего отмечал:</h3>';
+        fl.slice(0,4).forEach(function(f){
+          moodHtml += hbar(f, Math.round(flagCounts[f] / flagCounts[fl[0]] * 100), String(flagCounts[f]), false);
+        });
+      }
+    }
+    document.getElementById('chMood').innerHTML = moodHtml || emptyMsg('Отмечай настроение на главной — тут появится картина месяца');
+
+    // 5. цели
+    var doneGoals = state.goals.filter(function(x){ return x.done; });
+    var g = activeGoal();
+    var goalsHtml = '<p style="font-size:14px;">Выполнено целей: <b style="color:#c2410c;">' + doneGoals.length + '</b> 🏆</p>';
+    if (g) goalsHtml += '<p style="font-size:14px;">Сейчас в работе: 🎯 ' + escapeHtml(g.text) + '</p>';
+    doneGoals.slice(-5).reverse().forEach(function(x){
+      goalsHtml += '<p style="font-size:13px;color:#5a86ab;">✅ ' + escapeHtml(x.text) + ' <span class="rec">(' + x.doneDate + ')</span></p>';
+    });
+    document.getElementById('chGoals').innerHTML = goalsHtml;
+  }
+  function hbar(label, pct, val, emo){
+    return '<div class="hbar"><div class="lbl' + (emo ? ' emo' : '') + '">' + label + '</div>' +
+      '<div class="track"><div class="fill" style="width:' + Math.max(2, pct) + '%"></div></div>' +
+      '<div class="val">' + val + '</div></div>';
+  }
+  function emptyMsg(txt){
+    return '<p style="font-size:13.5px;color:#5a86ab;">' + (txt || 'Пока нет данных — закрывай пункты, и графики оживут 📈') + '</p>';
+  }
+
   /* ---------- тост ---------- */
   var toastEl = document.getElementById('toast');
   var toastTimer = null;
@@ -710,7 +1165,14 @@
   }
   toastEl.addEventListener('click', function(){ toastEl.classList.remove('show'); });
 
-  /* ---------- порог дня ---------- */
+  /* ---------- настройки (шестерёнка) ---------- */
+  var settingsOverlay = document.getElementById('settingsOverlay');
+  document.getElementById('gearBtn').addEventListener('click', function(){
+    settingsOverlay.classList.add('show');
+  });
+  document.getElementById('settingsClose').addEventListener('click', function(){
+    settingsOverlay.classList.remove('show');
+  });
   document.getElementById('thMinus').addEventListener('click', function(){
     if (state.threshold > 1) { state.threshold--; saveState(); render(); }
   });
@@ -730,11 +1192,11 @@
   });
   document.getElementById('calPrev').addEventListener('click', function(){
     calMonth.setMonth(calMonth.getMonth()-1);
-    renderCalendar();
+    renderMainCalendar();
   });
   document.getElementById('calNext').addEventListener('click', function(){
     calMonth.setMonth(calMonth.getMonth()+1);
-    renderCalendar();
+    renderMainCalendar();
   });
 
   render();
