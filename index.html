@@ -111,6 +111,36 @@
   .goaldone-list { margin-top:12px; border-top:0.5px solid rgba(30,80,130,0.12); padding-top:8px; }
   .goaldone-list p { font-size:13px; color:#5a86ab; text-decoration:line-through; margin:4px 0; }
   .goalcount { font-size:12.5px; color:#3d6a92; margin-top:6px; }
+  .goalprog { font-size:12.5px; color:#3d6a92; margin-bottom:6px; }
+  .goalprog b { color:#c2410c; }
+  .goalbar { height:6px; background:#e3eef7; border-radius:3px; margin-bottom:10px; overflow:hidden; }
+  .goalbar div { height:100%; background:linear-gradient(90deg,#4aa3e8,#2f9e4f); border-radius:3px; transition:width .3s ease; }
+  .steps { margin:2px 0 4px; }
+  .steprow {
+    display:flex; align-items:center; gap:10px; padding:8px 0;
+    cursor:pointer; user-select:none; -webkit-user-select:none;
+    border-bottom:0.5px solid rgba(30,80,130,0.08);
+  }
+  .steprow:last-child { border-bottom:none; }
+  .steprow .chk { flex:0 0 22px; width:22px; height:22px; font-size:13px; }
+  .steprow.done .chk { background:#2f9e4f; border-color:#2f9e4f; }
+  .steprow .stxt { flex:1; font-size:14px; line-height:1.35; }
+  .steprow.done .stxt { color:#5a86ab; text-decoration:line-through; }
+  .steprow .sdate { flex:0 0 auto; font-size:11.5px; color:#7e9cb8; font-weight:600; }
+  .stepadd { display:flex; gap:8px; margin-top:10px; }
+  .stepadd input {
+    flex:1; border:1.5px solid #c6ddef; border-radius:12px; padding:9px 12px;
+    font-size:14px; font-family:inherit; color:#123a5c; background:#fdfeff; min-width:0;
+  }
+  .stepadd input:focus { outline:none; border-color:#1d6fb8; }
+  .stepadd button {
+    flex:0 0 auto; border:none; background:#1d6fb8; color:#fff; font-size:14px;
+    font-weight:700; padding:9px 16px; border-radius:12px; cursor:pointer;
+  }
+  .goalfinish {
+    margin-top:12px; width:100%; border:1.5px solid #c6ddef; background:#f3f9ff;
+    color:#1d6fb8; font-size:14px; font-weight:700; padding:10px; border-radius:12px; cursor:pointer;
+  }
 
   .reportbtn {
     margin-top:20px; width:100%; border:none; background:#1d6fb8; color:#fff;
@@ -311,7 +341,7 @@
     </div>
 
     <div class="section">
-      <h2>🚀 Моя цель</h2>
+      <h2>🚀 Дополнительная цель</h2>
       <div class="card goalcard" id="goalCard"></div>
     </div>
 
@@ -716,8 +746,24 @@
     var doneGoals = state.goals.filter(function(x){ return x.done; });
     var html = '';
     if (g) {
-      html += '<div class="goaltext">🎯 ' + escapeHtml(g.text) + '</div>' +
-              '<button class="goalbtn" id="goalDone">Выполнил ✅</button>';
+      if (!g.steps) g.steps = [];
+      html += '<div class="goaltext">🎯 ' + escapeHtml(g.text) + '</div>';
+      if (g.steps.length) {
+        html += '<div class="steps">';
+        g.steps.forEach(function(s, i){
+          html += '<div class="steprow' + (s.done ? ' done' : '') + '" data-step="' + i + '">' +
+                    '<div class="chk">' + (s.done ? '✓' : '') + '</div>' +
+                    '<div class="stxt">' + escapeHtml(s.text) + '</div>' +
+                    (s.done && s.doneDate ? '<div class="sdate">' + shortDate(s.doneDate) + '</div>' : '') +
+                  '</div>';
+        });
+        html += '</div>';
+      }
+      html += '<div class="stepadd">' +
+                '<input id="stepInput" type="text" placeholder="Новый шаг к цели…" maxlength="120">' +
+                '<button id="stepAdd">＋</button>' +
+              '</div>';
+      html += '<button class="goalfinish" id="goalDone">Завершить цель 🏁</button>';
     } else {
       html += '<input class="goalinput" id="goalInput" type="text" placeholder="Например: подать статью в журнал" maxlength="120">' +
               '<button class="goalbtn" id="goalSave">Поставить цель 🚀</button>';
@@ -726,25 +772,50 @@
       html += '<div class="goalcount">Выполнено целей: <b>' + doneGoals.length + '</b> 🏆</div>';
       html += '<div class="goaldone-list">';
       doneGoals.slice(-3).reverse().forEach(function(x){
-        html += '<p>✅ ' + escapeHtml(x.text) + '</p>';
+        var sc = (x.steps || []).length;
+        html += '<p>✅ ' + escapeHtml(x.text) + (sc ? ' · ' + sc + ' шагов' : '') + '</p>';
       });
       html += '</div>';
     }
     card.innerHTML = html;
     if (g) {
+      card.querySelectorAll('.steprow').forEach(function(rowEl){
+        rowEl.addEventListener('click', function(){
+          var s = g.steps[parseInt(rowEl.getAttribute('data-step'), 10)];
+          s.done = !s.done;
+          s.doneDate = s.done ? todayStr() : undefined;
+          saveState();
+          renderGoal();
+        });
+      });
+      function addStep(){
+        var inp = document.getElementById('stepInput');
+        var txt = (inp.value || '').trim();
+        if (!txt) { inp.focus(); return; }
+        g.steps.push({ text: txt, date: todayStr(), done: false });
+        saveState();
+        renderGoal();
+        var ni = document.getElementById('stepInput');
+        if (ni) ni.focus();
+      }
+      document.getElementById('stepAdd').addEventListener('click', addStep);
+      document.getElementById('stepInput').addEventListener('keydown', function(e){
+        if (e.key === 'Enter') addStep();
+      });
       document.getElementById('goalDone').addEventListener('click', function(){
         g.done = true;
         g.doneDate = todayStr();
         saveState();
         renderGoal();
-        showToast('🎉 Цель выполнена! Ваша девушка гордится вами. Ставьте новую!');
+        var ds = g.steps.filter(function(s){ return s.done; }).length;
+        showToast('🎉 Цель «' + g.text + '» завершена' + (ds ? ' (' + ds + ' шагов)' : '') + '! Ваша девушка гордится вами. Ставьте новую!');
       });
     } else {
       document.getElementById('goalSave').addEventListener('click', function(){
         var inp = document.getElementById('goalInput');
         var txt = (inp.value || '').trim();
         if (!txt) { inp.focus(); return; }
-        state.goals.push({ text: txt, created: todayStr(), done: false });
+        state.goals.push({ text: txt, created: todayStr(), done: false, steps: [] });
         saveState();
         renderGoal();
       });
@@ -752,6 +823,10 @@
   }
   function escapeHtml(s){
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function shortDate(ds){
+    var p = ds.split('-');
+    return p[2] + '.' + p[1];
   }
 
   /* ---------- день чада ---------- */
@@ -1015,18 +1090,17 @@
     var rank = rankFor(bestS);
     if (rank) lines.push('🏆 Текущий ранг: ' + rank.name + ' ' + rank.emoji);
     var g = activeGoal();
-    if (g) lines.push('🚀 Цель: ' + g.text);
+    if (g) {
+      var gs = g.steps || [];
+      var gd = gs.filter(function(s){ return s.done; }).length;
+      lines.push('🚀 Доп. цель: ' + g.text + (gs.length ? ' (' + gd + '/' + gs.length + ' шагов)' : ''));
+    }
     var text = lines.join('\n');
 
-    if (navigator.share) {
-      navigator.share({ text: text }).catch(function(){});
-    } else if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function(){
-        showToast('Отчёт скопирован — вставь его Кате в чат 📋');
-      }, function(){ showToast(text); });
-    } else {
-      showToast(text);
-    }
+    // делимся через Telegram
+    window.open('https://t.me/share/url?url=' +
+      encodeURIComponent('https://noikinae.github.io/alfa-giga-chad/') +
+      '&text=' + encodeURIComponent('\n' + text), '_blank');
   });
 
   /* ---------- календарь по разделам (статистика) ---------- */
@@ -1139,9 +1213,16 @@
     var doneGoals = state.goals.filter(function(x){ return x.done; });
     var g = activeGoal();
     var goalsHtml = '<p style="font-size:14px;">Выполнено целей: <b style="color:#c2410c;">' + doneGoals.length + '</b> 🏆</p>';
-    if (g) goalsHtml += '<p style="font-size:14px;">Сейчас в работе: 🎯 ' + escapeHtml(g.text) + '</p>';
+    if (g) {
+      var gs = g.steps || [];
+      var gd = gs.filter(function(s){ return s.done; }).length;
+      goalsHtml += '<p style="font-size:14px;">Сейчас в работе: 🎯 ' + escapeHtml(g.text) +
+        (gs.length ? ' <span class="rec">(' + gd + '/' + gs.length + ' шагов)</span>' : '') + '</p>';
+    }
     doneGoals.slice(-5).reverse().forEach(function(x){
-      goalsHtml += '<p style="font-size:13px;color:#5a86ab;">✅ ' + escapeHtml(x.text) + ' <span class="rec">(' + x.doneDate + ')</span></p>';
+      var sc = (x.steps || []).length;
+      goalsHtml += '<p style="font-size:13px;color:#5a86ab;">✅ ' + escapeHtml(x.text) +
+        (sc ? ' · ' + sc + ' шагов' : '') + ' <span class="rec">(' + x.doneDate + ')</span></p>';
     });
     document.getElementById('chGoals').innerHTML = goalsHtml;
   }
