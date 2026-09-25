@@ -1283,5 +1283,36 @@
   render();
 })();
 </script>
+
+<script>
+/* Экспорт всей истории без изменения хранилища. */
+(function(){
+  'use strict';
+  var close = document.getElementById('settingsClose');
+  var button = document.createElement('button');
+  button.id = 'exportHistory';
+  button.textContent = 'Скачать историю';
+  close.parentNode.insertBefore(button, close);
+  button.addEventListener('click', async function(){
+    try {
+      var raw = localStorage.getItem('alfa-giga-chad-v1');
+      if (!raw) { alert('В этом приложении пока нет сохранённой истории. Откройте его через прежнюю иконку на iPhone.'); return; }
+      var data = JSON.parse(raw);
+      var text = JSON.stringify({format:'alfa-giga-chad-backup',version:1,exportedAt:new Date().toISOString(),data:data},null,2);
+      var name = 'alfa-giga-chad-history-' + new Date().toISOString().slice(0,10) + '.json';
+      var file = new File([text],name,{type:'application/json'});
+      if (navigator.canShare && navigator.canShare({files:[file]})) {
+        try { await navigator.share({files:[file],title:'История Альфа-Гига-Чада'}); return; }
+        catch(e) { if (e.name === 'AbortError') return; }
+      }
+      var url = URL.createObjectURL(file);
+      var a = document.createElement('a');
+      a.href = url; a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); },60000);
+    } catch(e) { alert('Не удалось выгрузить историю. Данные не изменены.'); }
+  });
+})();
+</script>
 </body>
 </html>
